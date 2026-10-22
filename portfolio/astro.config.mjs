@@ -23,10 +23,10 @@ export default defineConfig({
   fonts: [
     {
       provider: fontProviders.google(),
-      name: "Space Grotesk",
+      name: "Anton",
       cssVariable: "--font-brutalist",
-      weights: [700],
-      fallbacks: ["system-ui", "sans-serif"],
+      weights: [400],
+      fallbacks: ["Impact", "system-ui", "sans-serif"],
     },
     {
       provider: fontProviders.google(),
