@@ -15,16 +15,28 @@ if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 ---
 
 <Base>
-  <section class="hero-frame" aria-label="Bauhaus and Rothko composition">
+  <section class="hero-frame" aria-label="Rothko color fields with Bauhaus edgework">
     <div class="bauhaus-card">
-      <div class="rothko-bauhaus-canvas" aria-hidden="true">
-        <div class="rothko-field rothko-left"></div>
-        <div class="rothko-field rothko-center"></div>
-        <div class="rothko-field rothko-right"></div>
-        <div class="bauhaus-bar"></div>
-        <div class="bauhaus-circle"></div>
-        <div class="bauhaus-triangle"></div>
+      <div class="bauhaus-edge-rail bauhaus-edge-rail--top" aria-hidden="true">
+        <span class="edge-tick"></span>
+        <span class="edge-rule"></span>
+        <span class="edge-stud edge-stud--circle"></span>
+        <span class="edge-stud edge-stud--square"></span>
+        <span class="edge-rule"></span>
+        <span class="edge-tick"></span>
       </div>
+
+      <div class="rothko-canvas" aria-hidden="true">
+        <div class="bauhaus-corner bauhaus-corner--tl"></div>
+        <div class="bauhaus-corner bauhaus-corner--tr"></div>
+        <div class="bauhaus-corner bauhaus-corner--bl"></div>
+        <div class="bauhaus-corner bauhaus-corner--br"></div>
+
+        <div class="rothko-field rothko-red"></div>
+        <div class="rothko-field rothko-orange"></div>
+        <div class="rothko-field rothko-blue"></div>
+      </div>
+
       <div class="bauhaus-legend">
         <div class="legend-item">
           <span class="swatch swatch-crimson"></span>
@@ -91,87 +103,127 @@ if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
     overflow: hidden;
   }
 
-  /* Unified Rothko color-field canvas with Bauhaus geometry layered inside */
-  .rothko-bauhaus-canvas {
+  /* Subtle Bauhaus architectural edgework framing the Rothko canvas */
+  .bauhaus-edge-rail {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 14px;
+    background: var(--color-surface);
+    border-bottom: 2px solid var(--color-bauhaus-ink);
+  }
+
+  .edge-tick {
+    width: 8px;
+    height: 8px;
+    border: 1.5px solid var(--color-bauhaus-ink);
+    flex-shrink: 0;
+  }
+
+  .edge-rule {
+    flex: 1;
+    height: 1.5px;
+    background: var(--color-bauhaus-ink);
+    opacity: 0.35;
+  }
+
+  .edge-stud {
+    flex-shrink: 0;
+  }
+
+  .edge-stud--circle {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-rothko-crimson);
+  }
+
+  .edge-stud--square {
+    width: 8px;
+    height: 8px;
+    background: var(--color-rothko-ochre);
+  }
+
+  /* Pure Rothko color-field expanse: red, orange, blue */
+  .rothko-canvas {
     position: relative;
-    height: 210px;
-    padding: 18px;
-    background: #181312;
+    height: 205px;
+    padding: 22px 26px;
+    background:
+      radial-gradient(ellipse at 18% 50%, rgba(184, 41, 33, 0.35), transparent 60%),
+      radial-gradient(ellipse at 52% 50%, rgba(217, 93, 36, 0.28), transparent 60%),
+      radial-gradient(ellipse at 85% 50%, rgba(29, 53, 87, 0.38), transparent 60%),
+      #161110;
     display: grid;
-    grid-template-columns: 1.2fr 1fr 0.9fr;
-    gap: 14px;
+    grid-template-columns: 1.15fr 1.05fr 0.95fr;
+    gap: 18px;
     overflow: hidden;
   }
 
+  /* Fine Bauhaus corner L-brackets along the perimeter */
+  .bauhaus-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: rgba(246, 241, 231, 0.55);
+    border-style: solid;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .bauhaus-corner--tl {
+    top: 8px;
+    left: 8px;
+    border-width: 2px 0 0 2px;
+  }
+
+  .bauhaus-corner--tr {
+    top: 8px;
+    right: 8px;
+    border-width: 2px 2px 0 0;
+  }
+
+  .bauhaus-corner--bl {
+    bottom: 8px;
+    left: 8px;
+    border-width: 0 0 2px 2px;
+  }
+
+  .bauhaus-corner--br {
+    bottom: 8px;
+    right: 8px;
+    border-width: 0 2px 2px 0;
+  }
+
   .rothko-field {
+    position: relative;
     height: 100%;
-    border-radius: 6px;
-    filter: blur(1.5px);
+    border-radius: 10px;
+    filter: blur(3.5px);
   }
 
-  .rothko-left {
-    background: radial-gradient(
-      ellipse at 50% 48%,
-      #d63a2f 0%,
-      #a8201a 68%,
-      #7c1612 100%
-    );
-    box-shadow: 0 0 26px rgba(214, 58, 47, 0.55);
+  .rothko-red {
+    background:
+      radial-gradient(ellipse at 48% 42%, #ec4638 0%, #c6281f 56%, #851510 92%, rgba(90, 14, 10, 0.7) 100%);
+    box-shadow:
+      0 0 38px rgba(230, 62, 48, 0.62),
+      inset 0 0 28px rgba(255, 130, 105, 0.28);
   }
 
-  .rothko-center {
-    background: radial-gradient(
-      ellipse at 50% 50%,
-      #f0a824 0%,
-      #d96b1f 72%,
-      #a64214 100%
-    );
-    box-shadow: 0 0 24px rgba(240, 168, 36, 0.45);
+  .rothko-orange {
+    background:
+      radial-gradient(ellipse at 50% 48%, #f8b22d 0%, #e06d1f 58%, #9e3910 92%, rgba(110, 38, 12, 0.7) 100%);
+    box-shadow:
+      0 0 38px rgba(244, 152, 36, 0.54),
+      inset 0 0 26px rgba(255, 214, 120, 0.28);
   }
 
-  .rothko-right {
-    background: radial-gradient(
-      ellipse at 50% 50%,
-      #274675 0%,
-      #182c4d 75%,
-      #0f1b30 100%
-    );
-    box-shadow: 0 0 24px rgba(39, 70, 117, 0.5);
-  }
-
-  .bauhaus-bar {
-    position: absolute;
-    width: 140%;
-    height: 7px;
-    background: #161514;
-    top: 50%;
-    left: -20%;
-    transform: rotate(-11deg);
-  }
-
-  .bauhaus-circle {
-    position: absolute;
-    width: 88px;
-    height: 88px;
-    border-radius: 50%;
-    background: #f6f1e7;
-    border: 3px solid #161514;
-    top: 50%;
-    left: 42%;
-    transform: translate(-50%, -50%);
-    box-shadow: 5px 5px 0 #161514;
-  }
-
-  .bauhaus-triangle {
-    position: absolute;
-    bottom: 24px;
-    right: 42px;
-    width: 0;
-    height: 0;
-    border-left: 24px solid transparent;
-    border-right: 24px solid transparent;
-    border-bottom: 42px solid #e8a317;
-    filter: drop-shadow(4px 4px 0 #161514);
+  .rothko-blue {
+    background:
+      radial-gradient(ellipse at 52% 48%, #355fa0 0%, #1f3a68 58%, #11203d 92%, rgba(12, 23, 46, 0.75) 100%);
+    box-shadow:
+      0 0 38px rgba(53, 95, 160, 0.58),
+      inset 0 0 26px rgba(120, 170, 240, 0.22);
   }
 
   .bauhaus-legend {
@@ -294,7 +346,7 @@ if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
   }
 
   @media (max-width: 640px) {
-    .rothko-bauhaus-canvas {
+    .rothko-canvas {
       grid-template-columns: 1fr;
       height: 180px;
     }
