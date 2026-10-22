@@ -17,10 +17,21 @@ if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 <Base>
   <section class="hero-frame" aria-label="Rothko color fields">
     <div class="bauhaus-card">
-      <div class="rothko-canvas" aria-hidden="true">
-        <div class="rothko-field rothko-red"></div>
-        <div class="rothko-field rothko-orange"></div>
-        <div class="rothko-field rothko-blue"></div>
+      <div
+        class="rothko-canvas"
+        id="rothko-canvas"
+        title="Click to re-strike neon ballast"
+        aria-hidden="true"
+      >
+        <div class="rothko-field rothko-red" id="field-red">
+          <div class="rothko-core"></div>
+        </div>
+        <div class="rothko-field rothko-orange" id="field-orange">
+          <div class="rothko-core"></div>
+        </div>
+        <div class="rothko-field rothko-blue" id="field-blue">
+          <div class="rothko-core"></div>
+        </div>
       </div>
 
       <div class="bauhaus-legend">
@@ -75,6 +86,102 @@ if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
   }
 </Base>
 
+<script>
+  const canvas = document.getElementById("rothko-canvas");
+  const redEl = document.getElementById("field-red");
+  const orangeEl = document.getElementById("field-orange");
+  const blueEl = document.getElementById("field-blue");
+
+  let strikeStart = performance.now();
+
+  // Filtered brown-noise state per tube for magnetic ballast voltage drift
+  const voltageNoise = [0, 0, 0];
+
+  // Clicking the canvas re-strikes the gas-discharge ballast
+  canvas?.addEventListener("click", () => {
+    strikeStart = performance.now();
+  });
+
+  /**
+   * Models gas-discharge tube ignition + warm-up curve (0..1 brightness):
+   * - Tube 0 (Neon Red): lowest breakdown voltage, crisp strike at 50ms + brief overshoot
+   * - Tube 1 (Amber): starter bimetallic double-blink at 170ms & 310ms, then locks in
+   * - Tube 2 (Argon/Mercury Blue): strikes dim at 230ms, then exponential thermal vapor warm-up
+   */
+  function getBallastIgnition(elapsedMs: number): [number, number, number] {
+    let r = 0;
+    if (elapsedMs > 50) {
+      const t = elapsedMs - 50;
+      if (t < 45) r = 1.16;
+      else if (t < 85) r = 0.38;
+      else r = 1 - 0.62 * Math.exp(-(t - 85) / 180);
+    }
+
+    let o = 0;
+    if (elapsedMs > 170) {
+      const t = elapsedMs - 170;
+      if (t < 40) o = 0.85;
+      else if (t < 110) o = 0.08;
+      else if (t < 155) o = 1.1;
+      else if (t < 195) o = 0.45;
+      else o = 1 - 0.55 * Math.exp(-(t - 195) / 240);
+    }
+
+    let b = 0;
+    if (elapsedMs > 230) {
+      const t = elapsedMs - 230;
+      if (t < 35) b = 0.55;
+      else if (t < 75) b = 0.18;
+      else b = 1 - 0.82 * Math.exp(-(t - 75) / 520);
+    }
+
+    return [r, o, b];
+  }
+
+  function tick(now: number) {
+    const t = now / 1000;
+    let [intR, intO, intB] = getBallastIgnition(now - strikeStart);
+
+    for (let i = 0; i < 3; i++) {
+      // Ornstein-Uhlenbeck / leaky integrator brown noise for transformer voltage drift
+      voltageNoise[i] =
+        voltageNoise[i] * 0.88 + (Math.random() - 0.5) * 0.042;
+    }
+
+    const humR =
+      1 +
+      voltageNoise[0] +
+      0.022 * Math.sin(t * 37.7) * Math.sin(t * 5.3) +
+      0.055 * Math.sin(t * 0.85);
+    const humO =
+      1 +
+      voltageNoise[1] +
+      0.022 * Math.sin(t * 41.2 + 1.1) * Math.cos(t * 4.7) +
+      0.055 * Math.sin(t * 0.72 + 1.4);
+    const humB =
+      1 +
+      voltageNoise[2] +
+      0.02 * Math.cos(t * 33.5 + 2.3) * Math.sin(t * 6.1) +
+      0.055 * Math.cos(t * 0.64 + 2.5);
+
+    intR *= humR;
+    intO *= humO;
+    intB *= humB;
+
+    if (redEl && orangeEl && blueEl) {
+      redEl.style.setProperty("--tube-intensity", intR.toFixed(3));
+      orangeEl.style.setProperty("--tube-intensity", intO.toFixed(3));
+      blueEl.style.setProperty("--tube-intensity", intB.toFixed(3));
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    requestAnimationFrame(tick);
+  }
+</script>
+
 <style>
   .hero-frame {
     max-width: var(--wide-width);
@@ -95,45 +202,85 @@ if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
     height: 440px;
     padding: 28px;
     background:
-      radial-gradient(ellipse at 17% 50%, rgba(184, 41, 33, 0.38), transparent 62%),
-      radial-gradient(ellipse at 50% 50%, rgba(217, 93, 36, 0.3), transparent 62%),
-      radial-gradient(ellipse at 83% 50%, rgba(29, 53, 87, 0.42), transparent 62%),
+      linear-gradient(
+        90deg,
+        rgba(184, 41, 33, 0.34) 0%,
+        rgba(217, 93, 36, 0.28) 50%,
+        rgba(29, 53, 87, 0.38) 100%
+      ),
       #161110;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
     overflow: hidden;
+    cursor: pointer;
   }
 
+  /* Rectangular diffuser panel with soft feathered borders */
   .rothko-field {
+    --tube-intensity: 1;
     position: relative;
     height: 100%;
-    border-radius: 12px;
-    filter: blur(4px);
+    border-radius: 10px;
+    padding: 22px;
+    display: flex;
+    filter: blur(3.5px);
+    opacity: clamp(0.04, var(--tube-intensity), 1);
+    will-change: opacity, box-shadow;
+  }
+
+  /* Rectangular inner luminous core that fits the rectangular panel geometry */
+  .rothko-core {
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    filter: blur(12px);
+    opacity: calc(0.78 * var(--tube-intensity));
   }
 
   .rothko-red {
     background:
-      radial-gradient(ellipse at 48% 42%, #ec4638 0%, #c6281f 56%, #851510 92%, rgba(90, 14, 10, 0.72) 100%);
+      linear-gradient(180deg, #981913 0%, #d42e23 14%, #d42e23 86%, #881510 100%);
     box-shadow:
-      0 0 44px rgba(230, 62, 48, 0.62),
-      inset 0 0 36px rgba(255, 130, 105, 0.28);
+      0 0 calc(46px * var(--tube-intensity)) rgba(235, 62, 48, 0.62),
+      inset 0 0 34px rgba(72, 10, 8, 0.72),
+      inset 0 0 calc(48px * var(--tube-intensity)) rgba(255, 120, 96, 0.35);
+  }
+
+  .rothko-red .rothko-core {
+    background:
+      linear-gradient(180deg, #f0483a 0%, #ff6352 50%, #eb4335 100%);
+    box-shadow: 0 0 28px #ff5c4b;
   }
 
   .rothko-orange {
     background:
-      radial-gradient(ellipse at 50% 48%, #f8b22d 0%, #e06d1f 58%, #9e3910 92%, rgba(110, 38, 12, 0.72) 100%);
+      linear-gradient(180deg, #a43c11 0%, #e06d1f 14%, #e06d1f 86%, #96350e 100%);
     box-shadow:
-      0 0 44px rgba(244, 152, 36, 0.54),
-      inset 0 0 34px rgba(255, 214, 120, 0.28);
+      0 0 calc(46px * var(--tube-intensity)) rgba(244, 152, 36, 0.56),
+      inset 0 0 34px rgba(82, 26, 8, 0.72),
+      inset 0 0 calc(48px * var(--tube-intensity)) rgba(255, 206, 105, 0.35);
+  }
+
+  .rothko-orange .rothko-core {
+    background:
+      linear-gradient(180deg, #f59b23 0%, #ffc238 50%, #f29120 100%);
+    box-shadow: 0 0 28px #ffb830;
   }
 
   .rothko-blue {
     background:
-      radial-gradient(ellipse at 52% 48%, #355fa0 0%, #1f3a68 58%, #11203d 92%, rgba(12, 23, 46, 0.76) 100%);
+      linear-gradient(180deg, #101f3b 0%, #1f3c6d 14%, #1f3c6d 86%, #0e1b34 100%);
     box-shadow:
-      0 0 44px rgba(53, 95, 160, 0.58),
-      inset 0 0 34px rgba(120, 170, 240, 0.22);
+      0 0 calc(48px * var(--tube-intensity)) rgba(56, 102, 174, 0.6),
+      inset 0 0 34px rgba(8, 15, 30, 0.78),
+      inset 0 0 calc(48px * var(--tube-intensity)) rgba(120, 175, 250, 0.28);
+  }
+
+  .rothko-blue .rothko-core {
+    background:
+      linear-gradient(180deg, #2e5694 0%, #4374bd 50%, #2b508a 100%);
+    box-shadow: 0 0 28px #4374bd;
   }
 
   .bauhaus-legend {
