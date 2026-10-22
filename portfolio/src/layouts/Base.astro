@@ -299,16 +299,18 @@ const isLoggedIn = Boolean(Astro.locals.user);
       .masthead {
         padding-bottom: var(--spacing-md);
         border-bottom: 2px solid var(--color-bauhaus-ink);
+        text-align: center;
       }
 
       .site-title {
         display: block;
         font-family: var(--font-brutalist), system-ui, -apple-system, sans-serif;
-        font-size: clamp(4.2rem, 10.6vw, 8.7rem);
+        font-size: clamp(1.5rem, 8.2vw, 6.65rem);
         font-weight: 700;
-        line-height: 0.9;
+        line-height: 0.95;
+        white-space: nowrap;
         text-decoration: none;
-        letter-spacing: -0.045em;
+        letter-spacing: -0.04em;
         text-transform: uppercase;
       }
 
