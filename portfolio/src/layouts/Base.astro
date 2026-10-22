@@ -48,8 +48,7 @@ const fullTitle = !title
     ? title
     : `${title}${separator}${siteTitle}`;
 const siteDescription =
-  settings?.tagline ||
-  "A Bauhaus & Rothko starter portfolio for Cloudflare Build Night.";
+  settings?.tagline || "Pick a direction. Make it yours.";
 const siteLogo = settings?.logo?.url ? settings.logo : null;
 const canonicalUrl =
   canonical ?? new URL(Astro.url.pathname, Astro.url.origin).href;
@@ -99,12 +98,8 @@ const isLoggedIn = Boolean(Astro.locals.user);
   <body>
     <EmDashBodyStart page={pageCtx} />
     <header class="site-header">
-      <nav class="nav">
+      <div class="masthead">
         <a href="/" class="site-title">
-          <span class="bauhaus-mark" aria-hidden="true">
-            <span class="mark-circle"></span>
-            <span class="mark-square"></span>
-          </span>
           {
             siteLogo ? (
               <img
@@ -117,6 +112,13 @@ const isLoggedIn = Boolean(Astro.locals.user);
             )
           }
         </a>
+      </div>
+      <nav class="nav">
+        <div class="bauhaus-mark" aria-hidden="true">
+          <span class="mark-circle"></span>
+          <span class="mark-square"></span>
+          <span class="mark-triangle"></span>
+        </div>
         <div class="nav-links">
           {
             menu?.items.map((item) => (
@@ -132,7 +134,7 @@ const isLoggedIn = Boolean(Astro.locals.user);
             ))
           }
           <a href="/_emdash/admin" class="nav-admin">
-            {isLoggedIn ? "Admin" : " Setup / Admin"}
+            {isLoggedIn ? "Admin" : "Admin"}
           </a>
         </div>
       </nav>
@@ -144,39 +146,29 @@ const isLoggedIn = Boolean(Astro.locals.user);
 
     <footer class="site-footer">
       <div class="footer-content">
-        <div class="footer-brand">
-          <span class="footer-logo">{siteTitle}</span>
-          <p class="footer-tagline">
-            {settings?.tagline || "Built on Cloudflare Workers + EmDash"}
-          </p>
-        </div>
-        <div class="footer-right">
-          <div class="theme-switcher">
-            <button
-              type="button"
-              class="theme-btn"
-              data-theme="light"
-              aria-pressed="false"
-              aria-label="Light mode">Light</button
-            >
-            <button
-              type="button"
-              class="theme-btn"
-              data-theme="dark"
-              aria-pressed="false"
-              aria-label="Dark mode">Dark</button
-            >
-            <button
-              type="button"
-              class="theme-btn"
-              data-theme="system"
-              aria-pressed="false"
-              aria-label="System theme">System</button
-            >
-          </div>
-          <p class="footer-powered">
-            Powered by <a href="https://emdashcms.com">EmDash</a> &amp; <a href="https://workers.cloudflare.com">Cloudflare Workers</a>
-          </p>
+        <span class="footer-logo">{siteTitle}</span>
+        <div class="theme-switcher">
+          <button
+            type="button"
+            class="theme-btn"
+            data-theme="light"
+            aria-pressed="false"
+            aria-label="Light mode">Light</button
+          >
+          <button
+            type="button"
+            class="theme-btn"
+            data-theme="dark"
+            aria-pressed="false"
+            aria-label="Dark mode">Dark</button
+          >
+          <button
+            type="button"
+            class="theme-btn"
+            data-theme="system"
+            aria-pressed="false"
+            aria-label="System theme">System</button
+          >
         </div>
       </div>
     </footer>
@@ -300,59 +292,73 @@ const isLoggedIn = Boolean(Astro.locals.user);
       .site-header {
         max-width: var(--wide-width);
         margin: 0 auto;
-        padding: var(--spacing-lg) var(--spacing-lg);
+        padding: var(--spacing-2xl) var(--spacing-lg) 0;
+      }
+
+      .masthead {
+        padding-bottom: var(--spacing-lg);
         border-bottom: 2px solid var(--color-bauhaus-ink);
+      }
+
+      .site-title {
+        display: block;
+        font-family: var(--font-heading);
+        font-size: clamp(3rem, 7.5vw, 6.25rem);
+        font-weight: var(--font-weight-display);
+        line-height: 0.98;
+        text-decoration: none;
+        letter-spacing: -0.03em;
+      }
+
+      .site-logo-img {
+        height: 56px;
+        width: auto;
+        display: block;
       }
 
       .nav {
         display: flex;
         justify-content: space-between;
         align-items: center;
-      }
-
-      .site-title {
-        display: inline-flex;
-        align-items: center;
-        gap: var(--spacing-sm);
-        font-family: var(--font-heading);
-        font-size: var(--font-size-lg);
-        font-weight: 700;
-        text-decoration: none;
-        letter-spacing: var(--tracking-tight);
+        padding: var(--spacing-md) 0;
+        border-bottom: 2px solid var(--color-bauhaus-ink);
       }
 
       .bauhaus-mark {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
+        gap: 8px;
       }
 
       .mark-circle {
-        width: 12px;
-        height: 12px;
+        width: 13px;
+        height: 13px;
         border-radius: 999px;
         background: var(--color-rothko-crimson);
         display: inline-block;
       }
 
       .mark-square {
-        width: 11px;
-        height: 11px;
+        width: 12px;
+        height: 12px;
         background: var(--color-rothko-ochre);
         display: inline-block;
       }
 
-      .site-logo-img {
-        height: 40px;
-        width: auto;
-        display: block;
+      .mark-triangle {
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 12px solid var(--color-rothko-ultramarine);
+        display: inline-block;
       }
 
       .nav-links {
         display: flex;
         align-items: center;
         gap: var(--spacing-xl);
-        font-size: var(--font-size-sm);
+        font-size: var(--font-size-xs);
         font-family: var(--font-mono);
         text-transform: uppercase;
         letter-spacing: var(--tracking-wide);
@@ -375,41 +381,26 @@ const isLoggedIn = Boolean(Astro.locals.user);
       }
 
       main {
-        min-height: calc(100vh - 200px);
+        min-height: calc(100vh - 240px);
       }
 
       .site-footer {
         max-width: var(--wide-width);
         margin: 0 auto;
-        padding: var(--spacing-3xl) var(--spacing-lg);
+        padding: var(--spacing-2xl) var(--spacing-lg);
         border-top: 2px solid var(--color-bauhaus-ink);
       }
 
       .footer-content {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
+        align-items: center;
       }
 
       .footer-logo {
         font-family: var(--font-heading);
         font-size: var(--font-size-lg);
         font-weight: 600;
-      }
-
-      .footer-tagline {
-        font-family: var(--font-heading);
-        font-style: italic;
-        font-size: var(--font-size-sm);
-        color: var(--color-muted);
-        margin-top: var(--spacing-xs);
-      }
-
-      .footer-right {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: var(--spacing-md);
       }
 
       .theme-switcher {
@@ -442,20 +433,6 @@ const isLoggedIn = Boolean(Astro.locals.user);
         border-color: var(--color-brand);
       }
 
-      .footer-powered {
-        font-size: var(--font-size-sm);
-        color: var(--color-muted);
-      }
-
-      .footer-powered a {
-        color: var(--color-text);
-        text-decoration: none;
-      }
-
-      .footer-powered a:hover {
-        text-decoration: underline;
-      }
-
       @media (max-width: 640px) {
         .nav {
           flex-direction: column;
@@ -469,16 +446,8 @@ const isLoggedIn = Boolean(Astro.locals.user);
 
         .footer-content {
           flex-direction: column;
-          gap: var(--spacing-xl);
+          gap: var(--spacing-md);
           align-items: flex-start;
-        }
-
-        .footer-right {
-          align-items: flex-start;
-        }
-
-        h1 {
-          font-size: var(--font-size-3xl);
         }
       }
     </style>

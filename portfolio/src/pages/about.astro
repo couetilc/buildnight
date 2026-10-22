@@ -15,7 +15,7 @@ if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 const seo = getSeoMeta(page, {
   siteUrl: Astro.url.origin,
   path: "/about",
-  defaultDescription: "About this Build Night portfolio.",
+  defaultDescription: "About me — what I'm learning, building, and exploring.",
 });
 ---
 
@@ -30,6 +30,7 @@ const seo = getSeoMeta(page, {
 >
   <div class="about-page">
     <header class="about-header">
+      <p class="about-eyebrow">Profile</p>
       <h1 class="about-title" {...page.edit.title}>
         {page.data.title}
       </h1>
@@ -40,26 +41,40 @@ const seo = getSeoMeta(page, {
         page.data.content ? (
           <PortableText value={page.data.content} />
         ) : (
-          <p>Content coming soon.</p>
+          <p>Open /_emdash/admin to write your story.</p>
         )
       }
     </div>
 
     <aside class="about-sidebar">
-      <div class="sidebar-section">
-        <h3>Stack</h3>
-        <ul>
-          <li>Cloudflare Workers (workerd)</li>
-          <li>D1 Serverless SQLite</li>
-          <li>Astro + Vite</li>
-          <li>EmDash CMS</li>
-        </ul>
+      <div class="sidebar-card">
+        <h3>Quick Facts</h3>
+        <dl class="profile-list">
+          <div>
+            <dt>Studying / Focus</dt>
+            <dd>Computer Science, Design, or your major</dd>
+          </div>
+          <div>
+            <dt>Currently Building</dt>
+            <dd>My first Cloudflare Worker at Build Night</dd>
+          </div>
+          <div>
+            <dt>Rabbit Holes</dt>
+            <dd>Systems, creative coding, open web</dd>
+          </div>
+          <div>
+            <dt>Off the Clock</dt>
+            <dd>Music, film, sketching, late-night side quests</dd>
+          </div>
+        </dl>
       </div>
 
-      <div class="sidebar-section">
-        <h3>Customize</h3>
+      <div class="sidebar-card sidebar-card--hint">
+        <h3>Make This Page Yours</h3>
         <p>
-          Edit this page in <a href="/_emdash/admin">/_emdash/admin</a> or restyle the theme in <code>src/styles/theme.css</code>.
+          Edit the bio sections on the left directly in{" "}
+          <a href="/_emdash/admin">/_emdash/admin</a> (under <strong>Pages &rarr; About</strong>),
+          or customize the Quick Facts card in <code>src/pages/about.astro</code>.
         </p>
       </div>
     </aside>
@@ -72,7 +87,7 @@ const seo = getSeoMeta(page, {
     margin: 0 auto;
     padding: var(--spacing-3xl) var(--spacing-lg) var(--spacing-4xl);
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1.65fr 1fr;
     gap: var(--spacing-3xl);
   }
 
@@ -80,6 +95,15 @@ const seo = getSeoMeta(page, {
     grid-column: 1 / -1;
     padding-bottom: var(--spacing-lg);
     border-bottom: 2px solid var(--color-bauhaus-ink);
+  }
+
+  .about-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-brand);
+    margin-bottom: var(--spacing-xs);
   }
 
   .about-title {
@@ -95,51 +119,75 @@ const seo = getSeoMeta(page, {
   }
 
   .about-content :global(p) {
-    margin-bottom: 1.5em;
+    margin-bottom: 1.4em;
   }
 
   .about-content :global(h2) {
     font-family: var(--font-heading);
     font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-heading);
-    margin-top: 2em;
-    margin-bottom: 0.75em;
+    margin-top: 1.8em;
+    margin-bottom: 0.5em;
+    padding-bottom: 0.25em;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .about-content :global(h2:first-child) {
+    margin-top: 0;
   }
 
   .about-sidebar {
-    background: var(--color-surface);
-    border: 1.5px solid var(--color-bauhaus-ink);
-    padding: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
     align-self: start;
   }
 
-  .sidebar-section + .sidebar-section {
-    margin-top: var(--spacing-xl);
-    padding-top: var(--spacing-xl);
-    border-top: 1px solid var(--color-border);
+  .sidebar-card {
+    background: var(--color-surface);
+    border: 2px solid var(--color-bauhaus-ink);
+    box-shadow: 6px 6px 0 var(--color-bauhaus-ink);
+    padding: var(--spacing-xl);
   }
 
-  .sidebar-section h3 {
+  .sidebar-card--hint {
+    box-shadow: none;
+    border-style: dashed;
+  }
+
+  .sidebar-card h3 {
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
+    color: var(--color-brand);
     margin-bottom: var(--spacing-md);
   }
 
-  .sidebar-section ul {
-    list-style: none;
-    font-size: var(--font-size-sm);
-    color: var(--color-muted);
+  .profile-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
   }
 
-  .sidebar-section li {
-    margin-bottom: var(--spacing-sm);
+  .profile-list dt {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-muted);
+    margin-bottom: 0.15rem;
   }
 
-  .sidebar-section p {
+  .profile-list dd {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+  }
+
+  .sidebar-card p {
     font-size: var(--font-size-sm);
     color: var(--color-muted);
+    line-height: var(--leading-normal);
   }
 
   @media (max-width: 768px) {
