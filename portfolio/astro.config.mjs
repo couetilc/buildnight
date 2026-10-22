@@ -23,6 +23,13 @@ export default defineConfig({
   fonts: [
     {
       provider: fontProviders.google(),
+      name: "Space Grotesk",
+      cssVariable: "--font-brutalist",
+      weights: [700],
+      fallbacks: ["system-ui", "sans-serif"],
+    },
+    {
+      provider: fontProviders.google(),
       name: "Playfair Display",
       cssVariable: "--font-heading",
       weights: [400, 500, 600, 700],
