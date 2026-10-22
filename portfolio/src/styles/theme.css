@@ -1,0 +1,10 @@
+/*
+  theme.css -- your theme overrides. Edit this file in Part 2 to
+  retheme your portfolio and make the vibe your own!
+
+  Declarations here are unlayered, so they always override the
+  @layer base defaults in src/styles/tokens.css.
+*/
+
+:root {
+}

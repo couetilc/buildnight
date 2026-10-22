@@ -1,0 +1,150 @@
+---
+import { getEmDashEntry, getSeoMeta } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+
+const {
+  entry: page,
+  error,
+  cacheHint,
+} = await getEmDashEntry("pages", "about");
+if (error) return new Response("Could not load the page", { status: 500 });
+if (!page) return Astro.rewrite("/404");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const seo = getSeoMeta(page, {
+  siteUrl: Astro.url.origin,
+  path: "/about",
+  defaultDescription: "About this Build Night portfolio.",
+});
+---
+
+<Base
+  title={seo.title}
+  pageTitle={seo.ogTitle}
+  description={seo.description}
+  image={seo.ogImage}
+  canonical={seo.canonical}
+  robots={seo.robots}
+  content={{ collection: "pages", id: page.data.id, slug: "about" }}
+>
+  <div class="about-page">
+    <header class="about-header">
+      <h1 class="about-title" {...page.edit.title}>
+        {page.data.title}
+      </h1>
+    </header>
+
+    <div class="about-content" {...page.edit.content}>
+      {
+        page.data.content ? (
+          <PortableText value={page.data.content} />
+        ) : (
+          <p>Content coming soon.</p>
+        )
+      }
+    </div>
+
+    <aside class="about-sidebar">
+      <div class="sidebar-section">
+        <h3>Stack</h3>
+        <ul>
+          <li>Cloudflare Workers (workerd)</li>
+          <li>D1 Serverless SQLite</li>
+          <li>Astro + Vite</li>
+          <li>EmDash CMS</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>Customize</h3>
+        <p>
+          Edit this page in <a href="/_emdash/admin">/_emdash/admin</a> or restyle the theme in <code>src/styles/theme.css</code>.
+        </p>
+      </div>
+    </aside>
+  </div>
+</Base>
+
+<style>
+  .about-page {
+    max-width: var(--wide-width);
+    margin: 0 auto;
+    padding: var(--spacing-3xl) var(--spacing-lg) var(--spacing-4xl);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-3xl);
+  }
+
+  .about-header {
+    grid-column: 1 / -1;
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--color-bauhaus-ink);
+  }
+
+  .about-title {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-display);
+    line-height: var(--leading-tight);
+  }
+
+  .about-content {
+    font-size: var(--font-size-base);
+    line-height: var(--leading-relaxed);
+  }
+
+  .about-content :global(p) {
+    margin-bottom: 1.5em;
+  }
+
+  .about-content :global(h2) {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-heading);
+    margin-top: 2em;
+    margin-bottom: 0.75em;
+  }
+
+  .about-sidebar {
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-bauhaus-ink);
+    padding: var(--spacing-xl);
+    align-self: start;
+  }
+
+  .sidebar-section + .sidebar-section {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-xl);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .sidebar-section h3 {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .sidebar-section ul {
+    list-style: none;
+    font-size: var(--font-size-sm);
+    color: var(--color-muted);
+  }
+
+  .sidebar-section li {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .sidebar-section p {
+    font-size: var(--font-size-sm);
+    color: var(--color-muted);
+  }
+
+  @media (max-width: 768px) {
+    .about-page {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

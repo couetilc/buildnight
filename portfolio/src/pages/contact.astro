@@ -1,0 +1,111 @@
+---
+import Base from "../layouts/Base.astro";
+
+const contactEmail = "hello@example.com";
+---
+
+<Base title="Contact" description="Get in touch.">
+  <div class="contact-page">
+    <header class="contact-header">
+      <p class="contact-eyebrow">Say Hello</p>
+      <h1 class="contact-title">Start a conversation</h1>
+      <p class="contact-intro">
+        Building something cool on the open web? Reach out to collaborate, share
+        ideas, or swap links.
+      </p>
+    </header>
+
+    <section class="contact-card" aria-labelledby="contact-email-heading">
+      <div>
+        <h2 id="contact-email-heading">Send an email</h2>
+        <p>Update <code>src/pages/contact.astro</code> with your own address or social links.</p>
+      </div>
+      <a class="contact-link" href={`mailto:${contactEmail}`}>
+        {contactEmail}
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .contact-page {
+    max-width: var(--wide-width);
+    margin: 0 auto;
+    padding: var(--spacing-3xl) var(--spacing-lg) var(--spacing-4xl);
+  }
+
+  .contact-header {
+    max-width: var(--max-width);
+    margin-bottom: var(--spacing-3xl);
+  }
+
+  .contact-eyebrow {
+    margin-bottom: var(--spacing-sm);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-brand);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .contact-title {
+    margin-bottom: var(--spacing-md);
+    font-family: var(--font-heading);
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-display);
+    line-height: var(--leading-tight);
+  }
+
+  .contact-intro {
+    font-size: var(--font-size-lg);
+    color: var(--color-muted);
+    line-height: var(--leading-normal);
+  }
+
+  .contact-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-2xl);
+    padding: var(--spacing-2xl);
+    background: var(--color-surface);
+    border: 2px solid var(--color-bauhaus-ink);
+    box-shadow: 8px 8px 0 var(--color-bauhaus-ink);
+  }
+
+  .contact-card h2 {
+    margin-bottom: var(--spacing-xs);
+    font-family: var(--font-heading);
+    font-size: var(--font-size-xl);
+  }
+
+  .contact-card p {
+    color: var(--color-muted);
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-xl);
+    color: var(--color-bg);
+    background: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    text-decoration: none;
+    transition: background var(--transition-fast);
+  }
+
+  .contact-link:hover {
+    color: var(--color-on-brand);
+    background: var(--color-brand);
+  }
+
+  @media (max-width: 768px) {
+    .contact-card {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>

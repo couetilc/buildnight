@@ -1,0 +1,482 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Build Night — What's Your Vibe?",
+    "description": "A Bauhaus & Rothko starter portfolio with a kaleidoscope of aesthetic vibes for Cloudflare Build Night.",
+    "author": "Cloudflare Build Night"
+  },
+  "settings": {
+    "title": "What's your vibe?",
+    "tagline": "This corner of the internet belongs to you. Start from Bauhaus geometry and Rothko color fields—then reshape every pixel in Part 2."
+  },
+  "collections": [
+    {
+      "slug": "projects",
+      "label": "Projects",
+      "labelSingular": "Project",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "urlPattern": "/work/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "featured_image",
+          "label": "Featured Image",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "client",
+          "label": "Vibe Archetype",
+          "type": "string"
+        },
+        {
+          "slug": "year",
+          "label": "Era",
+          "type": "string"
+        },
+        {
+          "slug": "summary",
+          "label": "Summary",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "gallery",
+          "label": "Gallery",
+          "type": "repeater",
+          "validation": {
+            "maxItems": 24,
+            "subFields": [
+              {
+                "slug": "image",
+                "label": "Image",
+                "type": "image",
+                "required": true
+              },
+              {
+                "slug": "caption",
+                "label": "Caption",
+                "type": "text"
+              }
+            ]
+          }
+        },
+        {
+          "slug": "url",
+          "label": "Project URL",
+          "type": "url"
+        }
+      ]
+    },
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "urlPattern": "/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    }
+  ],
+  "taxonomies": [
+    {
+      "name": "tag",
+      "label": "Tags",
+      "labelSingular": "Tag",
+      "hierarchical": false,
+      "collections": [
+        "projects"
+      ],
+      "terms": [
+        {
+          "slug": "geometric",
+          "label": "Geometric"
+        },
+        {
+          "slug": "color-field",
+          "label": "Color Field"
+        },
+        {
+          "slug": "brutalist",
+          "label": "Brutalist"
+        },
+        {
+          "slug": "retro-tech",
+          "label": "Retro Tech"
+        },
+        {
+          "slug": "editorial",
+          "label": "Editorial"
+        },
+        {
+          "slug": "kinetic",
+          "label": "Kinetic"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Vibes",
+          "url": "/work"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "type": "custom",
+          "label": "Contact",
+          "url": "/contact"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "About This Space",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "ab0",
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "ab1",
+                  "text": "Welcome to your personal corner of the internet, running on a Cloudflare Worker and backed by a D1 database. You deployed this site by hand—no black boxes, no algorithmic feed."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "h2",
+              "_key": "ab2",
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "ab3",
+                  "text": "Make It Yours in Part 2"
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "ab4",
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "ab5",
+                  "text": "The starter design blends Weimar-era Bauhaus geometry with Mark Rothko's luminous color fields. Browse the seeded vibes on the home page for inspiration, edit this copy in /_emdash/admin, or overhaul src/styles/theme.css with your coding agent in Part 2."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "projects": [
+      {
+        "id": "bauhaus-rothko",
+        "slug": "bauhaus-rothko",
+        "status": "published",
+        "data": {
+          "title": "Bauhaus × Rothko",
+          "client": "Color Field & Constructivism",
+          "year": "1919 / 1958",
+          "summary": "Architectural Bauhaus geometry intersecting soft, luminous Rothko pigment fields on warm archival paper.",
+          "featured_image": {
+            "id": "media-bauhaus-rothko",
+            "src": "/vibes/bauhaus-rothko.svg",
+            "alt": "Stacked crimson, ochre, and ultramarine Rothko color fields crossed by Bauhaus geometric forms",
+            "width": 1200,
+            "height": 900
+          },
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "br0",
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "br1",
+                  "text": "What happens when strict Weimar grid discipline meets emotional color fields? Heavy 2px structural borders hold the page together while deep crimson, saffron ochre, and midnight ultramarine glow from within."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "h2",
+              "_key": "br2",
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "br3",
+                  "text": "How to steal this vibe"
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "br4",
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "br5",
+                  "text": "Pair high-contrast serif headings with crisp monospace metadata labels, exposed grid borders, and warm paper backgrounds (#f6f1e7)."
+                }
+              ]
+            }
+          ]
+        },
+        "taxonomies": {
+          "tag": [
+            "geometric",
+            "color-field"
+          ]
+        }
+      },
+      {
+        "id": "swiss-brutalist",
+        "slug": "swiss-brutalist",
+        "status": "published",
+        "data": {
+          "title": "Swiss Brutalist Grid",
+          "client": "International Typographic Style",
+          "year": "1968 / 2026",
+          "summary": "Exposed hairlines, oversized neo-grotesque typography, and unapologetic structural honesty.",
+          "featured_image": {
+            "id": "media-swiss-brutalist",
+            "src": "/vibes/swiss-brutalist.svg",
+            "alt": "Swiss Brutalist grid with vermilion accent block and bold monospace typography",
+            "width": 1200,
+            "height": 900
+          },
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "sb0",
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "sb1",
+                  "text": "Inspired by Josef Müller-Brockmann concert posters and raw industrial spec sheets. Every container shows its seams, and typography does 90% of the visual heavy lifting."
+                }
+              ]
+            }
+          ]
+        },
+        "taxonomies": {
+          "tag": [
+            "brutalist",
+            "geometric"
+          ]
+        }
+      },
+      {
+        "id": "crt-terminal",
+        "slug": "crt-terminal",
+        "status": "published",
+        "data": {
+          "title": "Late-Night CRT Terminal",
+          "client": "Phosphor & Monospace",
+          "year": "1984 / 2026",
+          "summary": "Glowing P1 phosphor green, amber status readouts, scanlines, and zero-fluff command-line clarity.",
+          "featured_image": {
+            "id": "media-crt-terminal",
+            "src": "/vibes/crt-terminal.svg",
+            "alt": "Phosphor green CRT terminal screen showing Worker deployment telemetry",
+            "width": 1200,
+            "height": 900
+          },
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "ct0",
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "ct1",
+                  "text": "For systems programmers, cybersecurity tinkerers, and anyone who feels most at home in a dark terminal window. Turn your portfolio into an interactive manual page or live telemetry console."
+                }
+              ]
+            }
+          ]
+        },
+        "taxonomies": {
+          "tag": [
+            "retro-tech",
+            "brutalist"
+          ]
+        }
+      },
+      {
+        "id": "risograph-zine",
+        "slug": "risograph-zine",
+        "status": "published",
+        "data": {
+          "title": "Risograph Zine Studio",
+          "client": "DIY Print & Soy Ink",
+          "year": "1994 / 2026",
+          "summary": "Fluorescent pink and blue ink layers, halftone grain, tactile paper warmth, and playful collage energy.",
+          "featured_image": {
+            "id": "media-risograph-zine",
+            "src": "/vibes/risograph-zine.svg",
+            "alt": "Overlapping fluorescent pink, cyan, and yellow Risograph print circles",
+            "width": 1200,
+            "height": 900
+          },
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "rz0",
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "rz1",
+                  "text": "Who says software websites have to look sterile? Bring independent print culture to the web with multiply-blended ink Spot colors, slight rotations, and expressive editorial serifs."
+                }
+              ]
+            }
+          ]
+        },
+        "taxonomies": {
+          "tag": [
+            "editorial",
+            "color-field"
+          ]
+        }
+      },
+      {
+        "id": "solarpunk-botanical",
+        "slug": "solarpunk-botanical",
+        "status": "published",
+        "data": {
+          "title": "Solarpunk Botanical Lab",
+          "client": "Archival Field Notes",
+          "year": "2026",
+          "summary": "Forest greens, warm brass sun-dials, natural linen textures, and calm scientific notebook typography.",
+          "featured_image": {
+            "id": "media-solarpunk-botanical",
+            "src": "/vibes/solarpunk-botanical.svg",
+            "alt": "Botanical illustration framed inside an archival field notebook border with a golden sun",
+            "width": 1200,
+            "height": 900
+          },
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "sp0",
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "sp1",
+                  "text": "A hopeful, organic aesthetic combining 19th-century naturalist field journals with clean modern web typography. Ideal for research logs, essays, and hardware/climate projects."
+                }
+              ]
+            }
+          ]
+        },
+        "taxonomies": {
+          "tag": [
+            "editorial"
+          ]
+        }
+      },
+      {
+        "id": "kinetic-y2k",
+        "slug": "kinetic-y2k",
+        "status": "published",
+        "data": {
+          "title": "Kinetic Vapor & Y2K Web",
+          "client": "Early-Web Optimism",
+          "year": "2000 / 2026",
+          "summary": "Orbital vector rings, electric cyan gradients, pixel accents, and the spirit of the weird, handmade web.",
+          "featured_image": {
+            "id": "media-kinetic-y2k",
+            "src": "/vibes/kinetic-y2k.svg",
+            "alt": "Orbital vector rings and four-point star over an electric indigo-to-cyan gradient",
+            "width": 1200,
+            "height": 900
+          },
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "yk0",
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "yk1",
+                  "text": "Before every website used the same three templates, personal homepages were playgrounds for experiments, custom cursors, and bold vector art. Bring that energy back."
+                }
+              ]
+            }
+          ]
+        },
+        "taxonomies": {
+          "tag": [
+            "kinetic",
+            "retro-tech"
+          ]
+        }
+      }
+    ]
+  }
+}
