@@ -297,20 +297,22 @@ const isLoggedIn = Boolean(Astro.locals.user);
       }
 
       .masthead {
+        container-type: inline-size;
         padding-bottom: var(--spacing-md);
         border-bottom: 2px solid var(--color-bauhaus-ink);
         text-align: center;
+        overflow: hidden;
       }
 
       .site-title {
         display: block;
         font-family: var(--font-brutalist), system-ui, -apple-system, sans-serif;
-        font-size: clamp(1.5rem, 8.2vw, 6.65rem);
+        font-size: 11cqi;
         font-weight: 700;
-        line-height: 0.95;
+        line-height: 0.9;
         white-space: nowrap;
         text-decoration: none;
-        letter-spacing: -0.04em;
+        letter-spacing: -0.055em;
         text-transform: uppercase;
       }
 
